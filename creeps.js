@@ -7,7 +7,7 @@ class Creep {
     getFreeSource(creep) {
         let sources = creep.room.find(FIND_SOURCES);
         for(let i in sources) {
-            if(Room.getFreeSpacesAround(sources[i]) > 0) {
+            if(Room.getFreeSpacesAround(sources[i]).length > 0) {
                 return sources[i].id;
             }
         }
@@ -47,8 +47,7 @@ class Creep {
             creep.moveTo(source);
         }
     }
-    transfer(creep) {
-        let structures = this.getTransferrableStructures(creep);
+    transfer(creep, structures) {
         if(creep.transfer(structures[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
             creep.moveTo(structures[0]);
         }

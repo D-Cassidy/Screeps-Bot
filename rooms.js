@@ -1,4 +1,13 @@
+const Phases = require('./phases');
+
 class Room {
+    initRoomMemory(room) {
+        let roomMem = room.memory || room;
+        if(!roomMem.phase) {
+            console.log(`Initializing Phase No. in ${room.name}`);
+            roomMem.phase = Phases.getCurrentPhaseNo(room);
+        }
+    }
     getSpacesAround(object, size) {
         let xStart = object.pos.x - parseInt(size / 2),
             yStart = object.pos.y - parseInt(size / 2),

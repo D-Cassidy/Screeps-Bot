@@ -1,3 +1,4 @@
+const Phases = require('./phases');
 const Struct = require('./struct-base');
 const Harvester = require('./role.harvester');
 const Upgrader = require('./role.upgrader');
@@ -5,36 +6,54 @@ const creepNames = require('./creepNames');
 
 class Spawner extends Struct {
     checkForSpawn(spawner) {
-        if(!Game.time % 10 == 3) {
-            return;
-        }
-        let roleCount = this.roleCount(spawner.room);
-        let memory = {origin: spawner.room.name, spawn: spawner.name};
-        if (roleCount.Harvester < 4) {
+        let phase = Phases.getPhaseDetails(spawner.room),
+            roleCount = this.roleCount(spawner.room),
+            memory = {origin: spawner.room.name, spawn: spawner.name};
+        if (roleCount.Harvester < phases.Harvester.count) {
             memory.role = Harvester.roleName;
             this.spawnDrone(spawner, memory);
         }
-        else if (roleCount.Upgrader < 4) {
+        else if (roleCount.Upgrader < phases.Upgrader.count) {
             memory.role = Upgrader.roleName;
             this.spawnDrone(spawner, memory);
         }
-        else if (roleCount.Builder < 0) {
+        else if (roleCount.Builder < phases.Builder.count) {
             memory.role = Upgrader.roleName;
             this.spawnDrone(spawner, memory);
         }
     }
     spawnDrone(spawner, memory) {
-        let body = [WORK, CARRY, MOVE, MOVE];
-        let dName = creepNames[Game.time % creepNames.length] + ' ' + memory.role.charAt(0);
+        let phase = Phases.getPhaseDetails(spawner.room);
+        let dName = creepNames[Game.time % creepNames.length] + ' ' + memory.role.charAt(0),
+            body = this.createCreepBody(spawner, phase[memory.role].body);
         if (spawner.spawnCreep(body, dName, {dryRun: true}) == OK) {
             console.log(`CREATING DRONE IN ${spawner.room.name}. WELCOME ${dName}, PLEASE ENJOY YOUR SHORT EXISTENCE`);
             spawner.spawnCreep(body, dName, {memory: memory});
         }
     }
+    createCreepBody(spawner, creepBodyBase) {
+        let availableEnergy = spawner.room.energyCapacityAvailable,
+            creepBodyBaseCost = this.getCreepBodyCost(creepBodyBase),
+            creepBody = [],
+            n;
+        n = parseInt(availableEnergy / creepBodyBaseCost);
+        while(n != 0) {
+            creepBody = creepBody.concat(creepBodyBase);
+            n--;
+        }
+        return creepBody;
+    }
+    getCreepBodyCost(body) {
+        return body.reduce((total, part) => {
+            return total + BODYPART_COST[part];
+        }, 0);
+    }
     run(spawner) {
-        this.checkForSpawn(spawner);
         if(spawner.spawning) {
             this.displaySpawningText(spawner);
+        }
+        if(Game.time % 10 == 3) {
+            this.checkForSpawn(spawner);
         }
     }
 }

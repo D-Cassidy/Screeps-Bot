@@ -1,11 +1,12 @@
 // Screeps-Colony
 // by Whimsickal
 // -------------
+const Phases = require('./phases');
 const Room = require('./rooms');
 const Spawner = require('./struct-spawner');
 const Harvester = require('./role.harvester');
 const Upgrader = require('./role.upgrader');
-// const RoleBuilder = require('./role.builder');
+// const Builder = require('./role.builder');
 
 module.exports.loop = function() {
     for(name in Memory.creeps) {
@@ -16,9 +17,11 @@ module.exports.loop = function() {
     }
 
     for(name in Game.rooms) {
-        // INITIALIZE ROOM MEMORY HERE
-
         let room = Game.rooms[name];
+
+        Room.initRoomMemory(room);
+        Phases.checkPhaseNo(room);
+
         let structures = room.find(FIND_MY_STRUCTURES).filter(s => {
             if(s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_TOWER) {
                 return s;
@@ -42,7 +45,7 @@ module.exports.loop = function() {
         if(creep.memory.role == Harvester.roleName) {
             Harvester.run(creep);
         }
-        if(creep.memory.role == Upgrader.rolename) {
+        if(creep.memory.role == Upgrader.roleName) {
             Upgrader.run(creep);
         }
     }

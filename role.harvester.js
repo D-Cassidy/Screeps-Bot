@@ -1,4 +1,5 @@
 const Creep = require('./creeps');
+const Upgrader = require('./role.upgrader');
 
 class Harvester extends Creep {
     constructor() {
@@ -10,7 +11,11 @@ class Harvester extends Creep {
             this.harvest(creep);
         }
         else {
-            this.transfer(creep);
+            let structures = this.getTransferrableStructures(creep);
+            if(structures.length > 0) {
+                this.transfer(creep, structures);
+            }
+            Upgrader.run(creep);
         }
     }
 }
