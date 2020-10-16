@@ -1,4 +1,10 @@
+const Phases = require('./phases');
+const Room = require('./rooms');
+
 class Struct {
+    constructor(structureType) {
+        this.structureType = structureType;
+    }
     roleCount(room) {
         let roleCount = Object.values(Game.creeps).reduce((obj, creep) => {
             if(creep.memory.origin == room.name || creep.memory.shardWide) {
@@ -34,6 +40,20 @@ class Struct {
             spawn.pos.y,
             { size: '0.5', align: 'left', opacity: 0.8, font: 'bold italic 0.75 Comic Sans' }
         );
+    }
+    buildExtensionsInRoom(room, spawner) {
+        let phase = Phases.getPhaseDetails(room),
+            possibleSpaces = Room.getSpacesAround(spawner, 5, {isCheckerBoard: true}),
+            desiredExtensions = phase.desiredExtensions;
+        for(let i in possibleSpaces) {
+            let space = possibleSpaces[i];
+            if(space.lookFor(LOOK_STRUCTURES).length > 0 || space.lookFor(LOOK_CONSTRUCTION_SITES).length > 0) {
+                desiredExtensions--;
+            }
+            else {
+                space.createConstructionSite(STRUCTURE_EXTENSION);
+            }
+        }
     }
 }
 

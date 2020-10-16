@@ -2,10 +2,12 @@ let Phases = [
     {}, // Controller Level 0...
     { // Controller Level 1
         Level: 1,
+        desiredExtensions: 5,
 
         // Phase 1 Goal: build 5 extensions
         checkGoal: (room) => {
-            let desiredExtensionCount = 5,
+            let phase = Phases.getPhaseDetails(room);
+            let desiredExtensionCount = phase.desiredExtensions,
                 structures = room.find(FIND_MY_STRUCTURES);
             for(name in structures) {
                 let s = structures[name];
@@ -38,11 +40,14 @@ let Phases = [
     },
     { // Controller Level 2
         Level: 2,
+        desiredExtensions: 10,
+        desiredTowers: 1,
 
         // Phase 2 Goal: build 10 extensions and 1 tower
         checkGoal: (room) => {
-            let desiredExtensionCount = 10,
-                desiredTowerCount = 1;
+            let phase = Phases.getPhaseDetails(room);
+            let desiredExtensionCount = phase.desiredExtensions,
+                desiredTowerCount = phase.desiredTowers;
                 structures = room.find(FIND_MY_STRUCTURES);
             for(name in structures) {
                 let s = structures[name];

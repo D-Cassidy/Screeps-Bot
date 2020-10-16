@@ -8,13 +8,25 @@ class Room {
             roomMem.phase = Phases.getCurrentPhaseNo(room);
         }
     }
-    getSpacesAround(object, size) {
-        let xStart = object.pos.x - parseInt(size / 2),
-            yStart = object.pos.y - parseInt(size / 2),
+    getSpacesAround(object, size, opts = {}) {
+        let radius = parseInt(size / 2),
+            xStart = object.pos.x - radius,
+            yStart = object.pos.y - radius,
             spaces = [];
-        for(let i = 0; i < 3; i++) {
-            for(let j = 0; j < 3; j++) {
-                spaces.push(new RoomPosition(xStart + j, yStart + i, object.room.name));
+        if(!opts.isCheckerBoard) {
+            for(let i = 0; i < size; i++) {
+                for(let j = 0; j < size; j++) {
+                    spaces.push(new RoomPosition(xStart + j, yStart + i, object.room.name));
+                }
+            }
+        }
+        if(opts.isCheckerBoard) {
+            for(let i = 0; i < size; i++) {
+                for(let j = 0; j < size; j++) {
+                    if((j % 2 == 0 && i % 2 == 0) || (j % 2 == 1 && i % 2 == 1)) {
+                        spaces.push(new RoomPosition(xStart + j, yStart + i, object.room.name));
+                    }
+                }
             }
         }
         return spaces;

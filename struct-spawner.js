@@ -6,6 +6,9 @@ const Builder = require('./role.builder');
 const creepNames = require('./creepNames');
 
 class Spawner extends Struct {
+    constructor(structureType) {
+        super(STRUCTURE_SPAWN);
+    }
     checkForSpawn(spawner) {
         let phase = Phases.getPhaseDetails(spawner.room),
             roleCount = this.roleCount(spawner.room),

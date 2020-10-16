@@ -4,6 +4,9 @@ class Creep {
     constructor(roleName) {
         this.roleName = roleName;
     }
+    is(creep) {
+        return creep.memory.role == this.roleName;
+    }
     getFreeSource(creep) {
         let sources = creep.room.find(FIND_SOURCES);
         for(let i in sources) {
