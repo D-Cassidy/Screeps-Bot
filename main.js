@@ -6,7 +6,7 @@ const Room = require('./rooms');
 const Spawner = require('./struct-spawner');
 const Harvester = require('./role.harvester');
 const Upgrader = require('./role.upgrader');
-// const Builder = require('./role.builder');
+const Builder = require('./role.builder');
 
 module.exports.loop = function() {
     for(name in Memory.creeps) {
@@ -45,8 +45,11 @@ module.exports.loop = function() {
         if(creep.memory.role == Harvester.roleName) {
             Harvester.run(creep);
         }
-        if(creep.memory.role == Upgrader.roleName) {
+        else if(creep.memory.role == Upgrader.roleName) {
             Upgrader.run(creep);
+        }
+        else if(creep.memory.role == Builder.roleName) {
+            Builder.run(creep);
         }
     }
 };

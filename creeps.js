@@ -15,16 +15,20 @@ class Creep {
     }
     getTransferrableStructures(creep) {
         return Game.rooms[creep.memory.origin].find(FIND_MY_STRUCTURES)
-            .filter(structure => {
-                if((structure.structureType == STRUCTURE_SPAWN ||
-                structure.structureType == STRUCTURE_EXTENSION ||
-                structure.structureType == STRUCTURE_TOWER ||
-                structure.structureType == STRUCTURE_CONTAINER ||
-                structure.structureType == STRUCTURE_STORAGE) &&
-                structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
-                    return structure;
+            .filter(s => {
+                if((s.structureType == STRUCTURE_SPAWN ||
+                s.structureType == STRUCTURE_EXTENSION ||
+                s.structureType == STRUCTURE_TOWER ||
+                s.structureType == STRUCTURE_CONTAINER ||
+                s.structureType == STRUCTURE_STORAGE) &&
+                s.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+                    return s;
                 }
             });
+    }
+    getConstructionSites(creep) {
+        return Game.rooms[creep.memory.origin].find(FIND_MY_CONSTRUCTION_SITES)
+            .sort((c1, c2) => { return c2.progress - c1.progress; });
     }
     checkWorkerState(creep) {
         if(creep.memory.working === undefined) {
@@ -56,6 +60,11 @@ class Creep {
         let controller = creep.room.controller;
         if(creep.upgradeController(controller) == ERR_NOT_IN_RANGE) {
             creep.moveTo(controller);
+        }
+    }
+    build(creep, constructionSites) {
+        if(creep.build(constructionSites[0]) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(constructionSites[0]);
         }
     }
 }

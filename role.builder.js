@@ -1,4 +1,5 @@
 const Creep = require('./creeps');
+const Harvester = require('./role.harvester');
 
 class Builder extends Creep {
     constructor() {
@@ -7,12 +8,18 @@ class Builder extends Creep {
     run(creep) {
         this.checkWorkerState(creep);
         if(!creep.memory.working) {
-            // RUN HARVEST CODE HERE
+            this.harvest(creep);
         }
         else {
-            // RUN BUILD CODE HERE
+            let constructionSites = this.getConstructionSites(creep);
+            if(constructionSites.length > 0) {
+                this.build(creep, constructionSites);
+            }
+            else {
+                Harvester.run(creep);
+            }
         }
     }
 }
 
-module.exports = new Upgrader();
+module.exports = new Builder();

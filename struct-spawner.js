@@ -2,6 +2,7 @@ const Phases = require('./phases');
 const Struct = require('./struct-base');
 const Harvester = require('./role.harvester');
 const Upgrader = require('./role.upgrader');
+const Builder = require('./role.builder');
 const creepNames = require('./creepNames');
 
 class Spawner extends Struct {
@@ -18,7 +19,7 @@ class Spawner extends Struct {
             this.spawnDrone(spawner, memory);
         }
         else if (roleCount.Builder < phase.Builder.count) {
-            memory.role = Upgrader.roleName;
+            memory.role = Builder.roleName;
             this.spawnDrone(spawner, memory);
         }
     }
