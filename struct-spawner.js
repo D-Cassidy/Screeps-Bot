@@ -9,15 +9,15 @@ class Spawner extends Struct {
         let phase = Phases.getPhaseDetails(spawner.room),
             roleCount = this.roleCount(spawner.room),
             memory = {origin: spawner.room.name, spawn: spawner.name};
-        if (roleCount.Harvester < phases.Harvester.count) {
+        if (roleCount.Harvester < phase.Harvester.count) {
             memory.role = Harvester.roleName;
             this.spawnDrone(spawner, memory);
         }
-        else if (roleCount.Upgrader < phases.Upgrader.count) {
+        else if (roleCount.Upgrader < phase.Upgrader.count) {
             memory.role = Upgrader.roleName;
             this.spawnDrone(spawner, memory);
         }
-        else if (roleCount.Builder < phases.Builder.count) {
+        else if (roleCount.Builder < phase.Builder.count) {
             memory.role = Upgrader.roleName;
             this.spawnDrone(spawner, memory);
         }

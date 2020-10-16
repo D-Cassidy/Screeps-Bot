@@ -15,7 +15,9 @@ class Harvester extends Creep {
             if(structures.length > 0) {
                 this.transfer(creep, structures);
             }
-            Upgrader.run(creep);
+            else {
+                Upgrader.run(creep);
+            }
         }
     }
 }
