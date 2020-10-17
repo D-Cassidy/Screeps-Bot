@@ -11,6 +11,14 @@ class Tower extends Struct {
             desiredTowers = phase.desiredTowers || 0,
             currentTowers = this.getTowerCount(room);
         if(desiredTowers <= currentTowers) return;
+        while(desiredTowers > 0) {
+            if(desiredTower == 0) {
+                break;
+            }
+            let pos = new RoomPosition(spawn.pos.x - 1, spawn.pos.y - 5, room.name);
+            room.memory.buildingTODO.towers.push(pos);
+            desiredTower--;
+        }
     }
     attackHostileCreeps(tower) {
         let creeps = tower.room.find(FIND_HOSTILE_CREEPS).filter(creep => {

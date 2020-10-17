@@ -6,8 +6,8 @@ let Phases = [
 
         // Phase 1 Goal: build 5 extensions
         checkGoal: (room) => {
-            let phase = Phases.getPhaseDetails(room);
-            let desiredExtensionCount = phase.desiredExtensions,
+            let phase = Phases.getPhaseDetails(room),
+                desiredExtensionCount = phase.desiredExtensions,
                 structures = room.find(FIND_MY_STRUCTURES);
             for(name in structures) {
                 let s = structures[name];
@@ -22,15 +22,15 @@ let Phases = [
         },
 
         Harvester: {
-            body: [WORK, CARRY, MOVE],
+            body: [WORK, CARRY, MOVE, MOVE],
             count: 2
         },
         Upgrader: {
-            body: [WORK, CARRY, MOVE],
+            body: [WORK, CARRY, MOVE, MOVE],
             count: 4
         },
         Builder: {
-            body: [WORK, CARRY, MOVE],
+            body: [WORK, CARRY, MOVE, MOVE],
             count: 4
         },
         'Remote-Miner': {
@@ -69,15 +69,15 @@ let Phases = [
         },
 
         Harvester: {
-            body: [WORK, CARRY, MOVE],
+            body: [WORK, CARRY, MOVE, MOVE],
             count: 2
         },
         Upgrader: {
-            body: [WORK, CARRY, MOVE],
+            body: [WORK, CARRY, MOVE, MOVE],
             count: 4
         },
         Builder: {
-            body: [WORK, CARRY, MOVE],
+            body: [WORK, CARRY, MOVE, MOVE],
             count: 4
         },
         'Remote-Miner': {
@@ -98,15 +98,15 @@ let Phases = [
         },
 
         Harvester: {
-            body: [WORK, WORK, CARRY],
+            body: [WORK, WORK, CARRY, MOVE],
             count: 2
         },
         Upgrader: {
-            body: [WORK, CARRY, MOVE],
+            body: [WORK, CARRY, MOVE, MOVE],
             count: 4
         },
         Builder: {
-            body: [WORK, CARRY, MOVE],
+            body: [WORK, CARRY, MOVE, MOVE],
             count: 4
         },
         'Remote-Miner': {

@@ -16,6 +16,9 @@ class Extension extends Struct {
             let possibleSpaces = Room.getSpacesAround(spawner, i, {isCheckerBoard: true});
             for(let j in possibleSpaces) {
                 let space = possibleSpaces[j];
+                if(desiredExtensions == 0) {
+                    break;
+                }
                 if(space.lookFor(LOOK_TERRAIN) == 'wall') {
                     continue;
                 }
@@ -23,7 +26,7 @@ class Extension extends Struct {
                     desiredExtensions--;
                 }
                 else {
-                    space.createConstructionSite(STRUCTURE_EXTENSION);
+                    room.memory.buildingTODO.extensions.push(space);
                 }
             }
             i += 2;

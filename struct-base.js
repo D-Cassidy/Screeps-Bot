@@ -5,6 +5,22 @@ class Struct {
     constructor(structureType) {
         this.structureType = structureType;
     }
+    buildTODOList(room) {
+        let phase = Phases.getPhaseDetails(room),
+            todo = room.memory.buildingTODO;
+        for(let i in todo.extensions) {
+            let pos = todo.extensions[i];
+            pos.createConstructionSite(STRUCTURE_EXTENSION);
+        }
+        for(let i in todo.towers) {
+            let pos = todo.towers[i];
+            pos.createConstructionSite(STRUCTURE_TOWER);
+        }
+        for(let i in todo.roads) {
+            let pos = todo.roads[i];
+            pos.createConstructionSite(STRUCTURE_ROAD);
+        }
+    }
     roleCount(room) {
         let roleCount = Object.values(Game.creeps).reduce((obj, creep) => {
             if(creep.memory.origin == room.name || creep.memory.shardWide) {
@@ -27,20 +43,34 @@ class Struct {
         return roleCount;
     }
     getExtensionCount(room) {
-        return room.find(FIND_MY_STRUCTURES).reduce((total, s) => {
+        let built = room.find(FIND_MY_STRUCTURES).reduce((total, s) => {
             if(s.structureType == STRUCTURE_EXTENSION) {
                 return total + 1;
             }
             return total;
         }, 0);
+        let constructing = room.find(FIND_CONSTRUCTION_SITES).reduce((total, s) => {
+            if(s.structureType == STRUCTURE_EXTENSION) {
+                return total + 1;
+            }
+            return total;
+        }, 0);
+        return built + constructing;
     }
     getTowerCount(room) {
-        return room.find(FIND_MY_STRUCTURES).reduce((total, s) => {
+        let built = room.find(FIND_MY_STRUCTURES).reduce((total, s) => {
             if(s.structureType == STRUCTURE_TOWER) {
                 return total + 1;
             }
             return total;
         }, 0);
+        let constructing = room.find(FIND_CONSTRUCTION_SITES).reduce((total, s) => {
+            if(s.structureType == STRUCTURE_TOWER) {
+                return total + 1;
+            }
+            return total;
+        }, 0);
+        return built + constructing;
     }
     displaySpawningText(spawn) {
         var percent = parseInt((spawn.spawning.needTime - spawn.spawning.remainingTime) / spawn.spawning.needTime * 100);

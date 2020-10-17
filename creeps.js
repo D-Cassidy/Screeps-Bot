@@ -1,5 +1,13 @@
 const Room = require('./rooms');
 
+const pathStyle = {
+    fill: 'transparent',
+    stroke: '#fff',
+    lineStyle: 'dashed',
+    strokeWidth: .15,
+    opacity: .1
+};
+
 class Creep {
     constructor(roleName) {
         this.roleName = roleName;
@@ -51,23 +59,23 @@ class Creep {
     harvest(creep) {
         let source = Game.getObjectById(creep.memory.sourceId);
         if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(source);
+            creep.moveTo(source, {visualizePathStyle: pathStyle});
         }
     }
     transfer(creep, structures) {
         if(creep.transfer(structures[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(structures[0]);
+            creep.moveTo(structures[0], {visualizePathStyle: pathStyle});
         }
     }
     upgrade(creep) {
         let controller = Game.rooms[creep.memory.origin].controller;
         if(creep.upgradeController(controller) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(controller);
+            creep.moveTo(controller, {visualizePathStyle: pathStyle});
         }
     }
     build(creep, constructionSites) {
         if(creep.build(constructionSites[0]) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(constructionSites[0]);
+            creep.moveTo(constructionSites[0], {visualizePathStyle: pathStyle});
         }
     }
 }

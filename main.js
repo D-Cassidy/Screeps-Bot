@@ -11,14 +11,12 @@ const Upgrader = require('./role.upgrader');
 const Builder = require('./role.builder');
 
 // TODO:
-// * Auto place towers
 // * Container mining after phase 2
 // * Miner role
-// * Containers as a phase 2 goal
-// * Roads?
+// * Containers as a phase 2 goals
 
 module.exports.loop = function() {
-    for(name in Memory.creeps) {
+    for(let name in Memory.creeps) {
         let creep = Game.creeps[name];
         if(!creep) {
             console.log(`Holy shit ${name} is fucking dead oh my god...`);
@@ -26,29 +24,26 @@ module.exports.loop = function() {
         }
     }
 
-    for(name in Game.rooms) {
+    for(let name in Game.rooms) {
         let room = Game.rooms[name];
         if(!room.controller.my) {
             continue;
         }
-
         Room.initRoomMemory(room);
         Phases.checkPhaseNo(room);
+        Extension.buildTODOList(room);
 
         let structures = room.find(FIND_MY_STRUCTURES).filter(s => {
             if(s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_TOWER) {
                 return s;
             }
-        })
-
-        for(name in structures) {
+        });
+        for(let name in structures) {
             let s = structures[name];
             if(s.structureType == STRUCTURE_SPAWN) {
-                if(Game.time % 100 == 3) {
-                    Extension.buildInRoom(room, s);
-                    // Tower.buildInRoom(room, s);
-                }
                 Spawner.run(s);
+                Extension.buildInRoom(room, s);
+                Tower.buildInRoom(room, s);
             }
             else if(s.structureType == STRUCTURE_TOWER) {
                 Tower.run(tower);
@@ -56,7 +51,7 @@ module.exports.loop = function() {
         }
     }
 
-    for(name in Game.creeps) {
+    for(let name in Game.creeps) {
         let creep = Game.creeps[name];
         if(Harvester.is(creep)) {
             Harvester.run(creep);

@@ -36,7 +36,7 @@ class Spawner extends Struct {
         }
     }
     createCreepBody(spawner, creepBodyBase) {
-        let availableEnergy = spawner.room.energyCapacityAvailable,
+        let availableEnergy = parseInt(spawner.room.energyCapacityAvailable * 0.9),
             creepBodyBaseCost = this.getCreepBodyCost(creepBodyBase),
             creepBody = [],
             n;
