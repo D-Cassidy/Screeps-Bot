@@ -4,24 +4,33 @@
 const Phases = require('./phases');
 const Room = require('./rooms');
 const Spawner = require('./struct-spawner');
+const Tower = require('./struct-tower');
 const Extension = require('./struct-extension');
 const Harvester = require('./role.harvester');
 const Upgrader = require('./role.upgrader');
 const Builder = require('./role.builder');
 
+// TODO:
+// * Auto place towers
+// * Container mining after phase 2
+// * Miner role
+// * Containers as a phase 2 goal
+// * Roads?
+
 module.exports.loop = function() {
     for(name in Memory.creeps) {
         let creep = Game.creeps[name];
         if(!creep) {
+            console.log(`Holy shit ${name} is fucking dead oh my god...`);
             delete Memory.creeps[name];
         }
     }
 
-    let spawn = Game.spawns['Hive Alpha'];
-    let spacesAround = Room.getSpacesAround(spawn, 5, {isCheckerBoard: true});
-
     for(name in Game.rooms) {
         let room = Game.rooms[name];
+        if(!room.controller.my) {
+            continue;
+        }
 
         Room.initRoomMemory(room);
         Phases.checkPhaseNo(room);
@@ -36,13 +45,13 @@ module.exports.loop = function() {
             let s = structures[name];
             if(s.structureType == STRUCTURE_SPAWN) {
                 if(Game.time % 100 == 3) {
-                    Extension.buildExtensionsInRoom(room, s);
+                    Extension.buildInRoom(room, s);
+                    // Tower.buildInRoom(room, s);
                 }
                 Spawner.run(s);
             }
             else if(s.structureType == STRUCTURE_TOWER) {
-                // RUN TOWER CODE HERE
-                ;
+                Tower.run(tower);
             }
         }
     }

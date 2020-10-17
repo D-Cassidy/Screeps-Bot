@@ -8,7 +8,7 @@ class Creep {
         return creep.memory.role == this.roleName;
     }
     getFreeSource(creep) {
-        let sources = creep.room.find(FIND_SOURCES);
+        let sources = Game.rooms[creep.memory.origin].find(FIND_SOURCES);
         for(let i in sources) {
             if(Room.getFreeSpacesAround(sources[i]).length > 0) {
                 return sources[i].id;
@@ -40,12 +40,12 @@ class Creep {
         if(creep.store[RESOURCE_ENERGY] == 0 && creep.memory.working == true) {
             creep.memory.working = false;
             creep.memory.sourceId = this.getFreeSource(creep);
-            creep.say('BEEP BOOP');
+            creep.say('BEEP');
         }
         else if(creep.store[RESOURCE_ENERGY] == creep.store.getCapacity() && creep.memory.working == false) {
             creep.memory.working = true;
             delete creep.memory.sourceId;
-            creep.say('BEEP BOOP');
+            creep.say('BOOP');
         }
     }
     harvest(creep) {
@@ -60,7 +60,7 @@ class Creep {
         }
     }
     upgrade(creep) {
-        let controller = creep.room.controller;
+        let controller = Game.rooms[creep.memory.origin].controller;
         if(creep.upgradeController(controller) == ERR_NOT_IN_RANGE) {
             creep.moveTo(controller);
         }

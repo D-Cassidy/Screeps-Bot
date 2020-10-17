@@ -36,6 +36,10 @@ let Phases = [
         'Remote-Miner': {
             body: [],
             count: 0
+        },
+        Settler: {
+            body:[],
+            count:0
         }
     },
     { // Controller Level 2
@@ -77,8 +81,12 @@ let Phases = [
             count: 4
         },
         'Remote-Miner': {
-            body: [WORK, CARRY, MOVE],
+            body: [],
             count: 0
+        },
+        Settler: {
+            body:[],
+            count:0
         }
     },
     { // Controller Level 3
@@ -102,8 +110,12 @@ let Phases = [
             count: 4
         },
         'Remote-Miner': {
-            body: [WORK, WORK, CARRY],
-            count: 1
+            body: [],
+            count: 0
+        },
+        Settler: {
+            body:[],
+            count:0
         }
     }
 ];
@@ -113,7 +125,7 @@ Phases.getPhaseDetails = function(room) {
     while(!Phases[phaseNo]) {
         phaseNo--;
         if(phaseNo == 0) {
-            console.log(`Phase does not exist`);
+            console.log(`Phase does not exist in room ${room.name}`);
             return false;
         }
     }

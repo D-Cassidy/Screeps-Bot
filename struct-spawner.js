@@ -26,12 +26,12 @@ class Spawner extends Struct {
             this.spawnDrone(spawner, memory);
         }
     }
-    spawnDrone(spawner, memory) {
-        let phase = Phases.getPhaseDetails(spawner.room);
-        let dName = creepNames[Game.time % creepNames.length] + ' ' + memory.role.charAt(0),
+    spawnDrone(spawner, memory, opts = {}) {
+        let phase = Phases.getPhaseDetails(spawner.room),
+            dName = creepNames[Game.time % creepNames.length] + ' ' + memory.role.charAt(0),
             body = this.createCreepBody(spawner, phase[memory.role].body);
         if (spawner.spawnCreep(body, dName, {dryRun: true}) == OK) {
-            console.log(`CREATING DRONE IN ${spawner.room.name}. WELCOME ${dName}, PLEASE ENJOY YOUR SHORT EXISTENCE`);
+            console.log(`Creating Drone in ${spawner.room.name}. Welcome ${dName}, please enjoy your short existence...`);
             spawner.spawnCreep(body, dName, {memory: memory});
         }
     }
