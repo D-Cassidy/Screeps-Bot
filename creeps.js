@@ -18,7 +18,7 @@ class Creep {
     getFreeSource(creep) {
         let sources = Game.rooms[creep.memory.origin].find(FIND_SOURCES);
         for(let i in sources) {
-            if(Room.getFreeSpacesAround(sources[i]).length > 0) {
+            if(Room.getFreeSpacesAround(sources[i], 3).length > 0) {
                 return sources[i].id;
             }
         }
@@ -70,7 +70,9 @@ class Creep {
     upgrade(creep) {
         let controller = Game.rooms[creep.memory.origin].controller;
         if(creep.upgradeController(controller) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(controller, {visualizePathStyle: pathStyle});
+            let closestSpots = Room.getFreeSpacesAround(controller, 7),
+                closestSpot = creep.pos.findClosestByPath(closestSpots);
+            creep.moveTo(closestSpot, {visualizePathStyle: pathStyle});
         }
     }
     build(creep, constructionSites) {

@@ -5,22 +5,6 @@ class Struct {
     constructor(structureType) {
         this.structureType = structureType;
     }
-    buildTODOList(room) {
-        let phase = Phases.getPhaseDetails(room),
-            todo = room.memory.buildingTODO;
-        for(let i in todo.extensions) {
-            let pos = todo.extensions[i];
-            pos.createConstructionSite(STRUCTURE_EXTENSION);
-        }
-        for(let i in todo.towers) {
-            let pos = todo.towers[i];
-            pos.createConstructionSite(STRUCTURE_TOWER);
-        }
-        for(let i in todo.roads) {
-            let pos = todo.roads[i];
-            pos.createConstructionSite(STRUCTURE_ROAD);
-        }
-    }
     roleCount(room) {
         let roleCount = Object.values(Game.creeps).reduce((obj, creep) => {
             if(creep.memory.origin == room.name || creep.memory.shardWide) {
@@ -31,14 +15,19 @@ class Struct {
                 return obj;
             }
             return obj;
-        }, {} );
+        }, {
+            Harvester: 0,
+            Upgrader: 0,
+            Builder: 0
+        } );
         // Print role counts
+        let phase = Phases.getPhaseDetails(room);
         console.log(
             `|`,
-            `Harvesters: ${roleCount.Harvester} |`,
-            `Upgraders: ${roleCount.Upgrader} |`,
-            `Builders: ${roleCount.Builder} |`,
-            `in ${room.name}`
+            `Harvesters: ${roleCount.Harvester || 0} |`,
+            `Upgraders: ${roleCount.Upgrader || 0} |`,
+            `Builders: ${roleCount.Builder || 0} |`,
+            `in ${room.name} (Phase ${phase.Level || 0})`
         );
         return roleCount;
     }

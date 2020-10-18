@@ -1,5 +1,5 @@
 const Creep = require('./creeps');
-const Harvester = require('./role.harvester');
+const Upgrader = require('./role.upgrader');
 
 class Builder extends Creep {
     constructor() {
@@ -16,7 +16,7 @@ class Builder extends Creep {
                 this.build(creep, constructionSites);
             }
             else {
-                Harvester.run(creep);
+                Upgrader.run(creep);
             }
         }
     }

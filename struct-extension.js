@@ -27,6 +27,7 @@ class Extension extends Struct {
                 }
                 else {
                     room.memory.buildingTODO.extensions.push(space);
+                    desiredExtensions--;
                 }
             }
             i += 2;

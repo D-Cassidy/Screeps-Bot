@@ -33,6 +33,10 @@ let Phases = [
             body: [WORK, CARRY, MOVE, MOVE],
             count: 4
         },
+        Miner: {
+            body: [],
+            count: 0
+        },
         'Remote-Miner': {
             body: [],
             count: 0
@@ -74,11 +78,15 @@ let Phases = [
         },
         Upgrader: {
             body: [WORK, CARRY, MOVE, MOVE],
-            count: 4
+            count: 2
         },
         Builder: {
             body: [WORK, CARRY, MOVE, MOVE],
-            count: 4
+            count: 2
+        },
+        Miner: {
+            body: [],
+            count: 0
         },
         'Remote-Miner': {
             body: [],
@@ -91,6 +99,8 @@ let Phases = [
     },
     { // Controller Level 3
         Level: 3,
+        desiredExtensions: 20,
+        desiredTowers: 1,
 
         // Phase 3 Goal: no goal yet
         checkGoal: (room) => {
@@ -98,16 +108,20 @@ let Phases = [
         },
 
         Harvester: {
-            body: [WORK, WORK, CARRY, MOVE],
+            body: [WORK, CARRY, MOVE, MOVE],
             count: 2
         },
         Upgrader: {
             body: [WORK, CARRY, MOVE, MOVE],
-            count: 4
+            count: 2
         },
         Builder: {
             body: [WORK, CARRY, MOVE, MOVE],
-            count: 4
+            count: 2
+        },
+        Miner: {
+            body: [],
+            count: 0
         },
         'Remote-Miner': {
             body: [],

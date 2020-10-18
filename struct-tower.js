@@ -12,12 +12,39 @@ class Tower extends Struct {
             currentTowers = this.getTowerCount(room);
         if(desiredTowers <= currentTowers) return;
         while(desiredTowers > 0) {
+            let pos;
+            pos = new RoomPosition(spawner.pos.x - 1, spawner.pos.y - 4, room.name);
+            if(!pos.lookFor(LOOK_STRUCTURES).length > 0 && !pos.lookFor(LOOK_CONSTRUCTION_SITES).length > 0) {
+                room.memory.buildingTODO.towers.push(pos);
+                desiredTower--;
+            }
             if(desiredTower == 0) {
                 break;
             }
-            let pos = new RoomPosition(spawn.pos.x - 1, spawn.pos.y - 5, room.name);
-            room.memory.buildingTODO.towers.push(pos);
-            desiredTower--;
+            pos = new RoomPosition(spawner.pos.x + 1, spawner.pos.y - 4, room.name);
+            if(!pos.lookFor(LOOK_STRUCTURES).length > 0 && !pos.lookFor(LOOK_CONSTRUCTION_SITES).length > 0) {
+                room.memory.buildingTODO.towers.push(pos);
+                desiredTower--;
+            }
+            if(desiredTower == 0) {
+                break;
+            }
+            pos = new RoomPosition(spawner.pos.x + 4, spawner.pos.y - 1, room.name);
+            if(!pos.lookFor(LOOK_STRUCTURES).length > 0 && !pos.lookFor(LOOK_CONSTRUCTION_SITES).length > 0) {
+                room.memory.buildingTODO.towers.push(pos);
+                desiredTower--;
+            }
+            if(desiredTower == 0) {
+                break;
+            }
+            pos = new RoomPosition(spawner.pos.x + 4, spawner.pos.y + 1, room.name);
+            if(!pos.lookFor(LOOK_STRUCTURES).length > 0 && !pos.lookFor(LOOK_CONSTRUCTION_SITES).length > 0) {
+                room.memory.buildingTODO.towers.push(pos);
+                desiredTower--;
+            }
+            if(desiredTower == 0) {
+                break;
+            }
         }
     }
     attackHostileCreeps(tower) {

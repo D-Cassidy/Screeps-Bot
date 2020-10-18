@@ -49,8 +49,8 @@ class Room {
         }
         return spaces;
     }
-    getFreeSpacesAround(object) {
-        return this.getSpacesAround(object, 3).filter(s => {
+    getFreeSpacesAround(object, size) {
+        return this.getSpacesAround(object, size).filter(s => {
             if(s.lookFor(LOOK_TERRAIN) != 'wall' && s.lookFor(LOOK_CREEPS).length == 0) {
                 return s;
             }

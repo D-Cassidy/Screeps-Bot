@@ -31,7 +31,6 @@ module.exports.loop = function() {
         }
         Room.initRoomMemory(room);
         Phases.checkPhaseNo(room);
-        Extension.buildTODOList(room);
 
         let structures = room.find(FIND_MY_STRUCTURES).filter(s => {
             if(s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_TOWER) {
@@ -42,11 +41,12 @@ module.exports.loop = function() {
             let s = structures[name];
             if(s.structureType == STRUCTURE_SPAWN) {
                 Spawner.run(s);
-                Extension.buildInRoom(room, s);
-                Tower.buildInRoom(room, s);
+                if(Game.time % 100 == 3) {
+                    Spawner.buildTODOList(room, s);
+                }
             }
             else if(s.structureType == STRUCTURE_TOWER) {
-                Tower.run(tower);
+                Tower.run(s);
             }
         }
     }
