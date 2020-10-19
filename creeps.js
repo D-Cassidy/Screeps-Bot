@@ -37,6 +37,14 @@ class Creep {
                 }
             });
     }
+    getContainers(creep) {
+        return Game.rooms[creep.memory.origin].find(FIND_MY_STRUCTURES)
+            .filter(s => {
+                if(s.structureType == STRUCTURE_CONTAINER) {
+                    return s;
+                }
+            });
+    }
     getConstructionSites(creep) {
         return Game.rooms[creep.memory.origin].find(FIND_MY_CONSTRUCTION_SITES)
             .sort((c1, c2) => { return c2.progress - c1.progress; });
@@ -56,15 +64,27 @@ class Creep {
             creep.say('BOOP');
         }
     }
+    harvestFromContainers(creep) {
+        let containers = this.getContainers(creep);
+        for(let i in containers) {
+            let container = containers[i];
+            if(container.store[RESOURCE_ENERGY] < creep.store.getFreeCapacity(RESOURCE_ENERGY)) {
+                continue;
+            }
+            else if(creep.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(container);
+            }
+        }
+    }
     harvest(creep) {
         let source = Game.getObjectById(creep.memory.sourceId);
         if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(source, {visualizePathStyle: pathStyle});
+            creep.moveTo(source);
         }
     }
     transfer(creep, structures) {
         if(creep.transfer(structures[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(structures[0], {visualizePathStyle: pathStyle});
+            creep.moveTo(structures[0]);
         }
     }
     upgrade(creep) {
@@ -72,12 +92,12 @@ class Creep {
         if(creep.upgradeController(controller) == ERR_NOT_IN_RANGE) {
             let closestSpots = Room.getFreeSpacesAround(controller, 7),
                 closestSpot = creep.pos.findClosestByPath(closestSpots);
-            creep.moveTo(closestSpot, {visualizePathStyle: pathStyle});
+            creep.moveTo(closestSpot);
         }
     }
     build(creep, constructionSites) {
         if(creep.build(constructionSites[0]) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(constructionSites[0], {visualizePathStyle: pathStyle});
+            creep.moveTo(constructionSites[0]);
         }
     }
 }

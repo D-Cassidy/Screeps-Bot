@@ -10,39 +10,44 @@ class Tower extends Struct {
         let phase = Phases.getPhaseDetails(room),
             desiredTowers = phase.desiredTowers || 0,
             currentTowers = this.getTowerCount(room);
-        if(desiredTowers <= currentTowers) return;
+        if(desiredTowers <= currentTowers + room.memory.buildingTODO.towers.length) return;
+        console.log(`Marking locations for tower placement in ${room.name}`);
         while(desiredTowers > 0) {
             let pos;
             pos = new RoomPosition(spawner.pos.x - 1, spawner.pos.y - 4, room.name);
             if(!pos.lookFor(LOOK_STRUCTURES).length > 0 && !pos.lookFor(LOOK_CONSTRUCTION_SITES).length > 0) {
                 room.memory.buildingTODO.towers.push(pos);
-                desiredTower--;
+                console.log("Pushing tower location into memory...");
+                desiredTowers--;
             }
-            if(desiredTower == 0) {
+            if(desiredTowers == 0) {
                 break;
             }
             pos = new RoomPosition(spawner.pos.x + 1, spawner.pos.y - 4, room.name);
             if(!pos.lookFor(LOOK_STRUCTURES).length > 0 && !pos.lookFor(LOOK_CONSTRUCTION_SITES).length > 0) {
                 room.memory.buildingTODO.towers.push(pos);
-                desiredTower--;
+                console.log("Pushing tower location into memory...");
+                desiredTowers--;
             }
-            if(desiredTower == 0) {
+            if(desiredTowers == 0) {
                 break;
             }
             pos = new RoomPosition(spawner.pos.x + 4, spawner.pos.y - 1, room.name);
             if(!pos.lookFor(LOOK_STRUCTURES).length > 0 && !pos.lookFor(LOOK_CONSTRUCTION_SITES).length > 0) {
                 room.memory.buildingTODO.towers.push(pos);
-                desiredTower--;
+                console.log("Pushing tower location into memory...");
+                desiredTowers--;
             }
-            if(desiredTower == 0) {
+            if(desiredTowers == 0) {
                 break;
             }
             pos = new RoomPosition(spawner.pos.x + 4, spawner.pos.y + 1, room.name);
             if(!pos.lookFor(LOOK_STRUCTURES).length > 0 && !pos.lookFor(LOOK_CONSTRUCTION_SITES).length > 0) {
                 room.memory.buildingTODO.towers.push(pos);
-                desiredTower--;
+                console.log("Pushing tower location into memory...");
+                desiredTowers--;
             }
-            if(desiredTower == 0) {
+            if(desiredTowers == 0) {
                 break;
             }
         }

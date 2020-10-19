@@ -8,14 +8,18 @@ let Phases = [
         checkGoal: (room) => {
             let phase = Phases.getPhaseDetails(room),
                 desiredExtensionCount = phase.desiredExtensions,
+                desiredContainerCount = room.find(FIND_SOURCES).length,
                 structures = room.find(FIND_MY_STRUCTURES);
             for(name in structures) {
                 let s = structures[name];
                 if(s.structureType == STRUCTURE_EXTENSION) {
                     desiredExtensionCount--;
                 }
+                if(s.structureType == STRUCTURE_CONTAINER) {
+                    desiredContainerCount--;
+                }
             }
-            if(desiredExtensionCount <= 0) {
+            if(desiredExtensionCount <= 0 && desiredContainerCount <= 0) {
                 return true;
             }
             return false;
@@ -78,15 +82,15 @@ let Phases = [
         },
         Upgrader: {
             body: [WORK, CARRY, MOVE, MOVE],
-            count: 2
+            count: 3
         },
         Builder: {
             body: [WORK, CARRY, MOVE, MOVE],
-            count: 2
+            count: 3
         },
         Miner: {
-            body: [],
-            count: 0
+            body: [WORK, WORK, WORK, WORK ,WORK, MOVE],
+            count: 1
         },
         'Remote-Miner': {
             body: [],
@@ -108,20 +112,20 @@ let Phases = [
         },
 
         Harvester: {
-            body: [WORK, CARRY, MOVE, MOVE],
+            body: [WORK, CARRY, MOVE],
             count: 2
         },
         Upgrader: {
-            body: [WORK, CARRY, MOVE, MOVE],
-            count: 2
+            body: [WORK, CARRY, MOVE],
+            count: 3
         },
         Builder: {
-            body: [WORK, CARRY, MOVE, MOVE],
-            count: 2
+            body: [WORK, CARRY, MOVE],
+            count: 3
         },
         Miner: {
-            body: [],
-            count: 0
+            body: [WORK, WORK, WORK, WORK ,WORK, MOVE],
+            count: 1
         },
         'Remote-Miner': {
             body: [],

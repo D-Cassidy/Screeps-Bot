@@ -31,13 +31,6 @@ class Room {
             xStart = object.pos.x - radius,
             yStart = object.pos.y - radius,
             spaces = [];
-        if(!opts.isCheckerBoard) {
-            for(let i = 0; i < size; i++) {
-                for(let j = 0; j < size; j++) {
-                    spaces.push(new RoomPosition(xStart + j, yStart + i, object.room.name));
-                }
-            }
-        }
         if(opts.isCheckerBoard) {
             for(let i = 0; i < size; i++) {
                 for(let j = 0; j < size; j++) {
@@ -47,14 +40,30 @@ class Room {
                 }
             }
         }
+        else {
+            for(let i = 0; i < size; i++) {
+                for(let j = 0; j < size; j++) {
+                    spaces.push(new RoomPosition(xStart + j, yStart + i, object.room.name));
+                }
+            }
+        }
         return spaces;
     }
-    getFreeSpacesAround(object, size) {
-        return this.getSpacesAround(object, size).filter(s => {
-            if(s.lookFor(LOOK_TERRAIN) != 'wall' && s.lookFor(LOOK_CREEPS).length == 0) {
-                return s;
-            }
-        })
+    getFreeSpacesAround(object, size, opts = {}) {
+        if(opts.excludeCreeps) {
+            return this.getSpacesAround(object, size).filter(s => {
+                if(s.lookFor(LOOK_TERRAIN) != 'wall') {
+                    return s;
+                }
+            });
+        }
+        else {
+            return this.getSpacesAround(object, size).filter(s => {
+                if(s.lookFor(LOOK_TERRAIN) != 'wall' && s.lookFor(LOOK_CREEPS).length == 0) {
+                    return s;
+                }
+            });
+        }
     }
 }
 

@@ -1,11 +1,14 @@
 const Phases = require('./phases');
-const Struct = require('./struct-base');
+
 const Harvester = require('./role.harvester');
 const Upgrader = require('./role.upgrader');
 const Builder = require('./role.builder');
+const Miner = require('./role.miner');
+
+const Struct = require('./struct-base');
 const Extension = require('./struct-extension');
 const Tower = require('./struct-tower');
-const creepNames = require('./creepNames');
+const Container = require('./struct-container');
 
 class Spawner extends Struct {
     constructor(structureType) {
@@ -16,40 +19,49 @@ class Spawner extends Struct {
             todo = room.memory.buildingTODO;
         Extension.buildInRoom(room, s);
         Tower.buildInRoom(room, s);
+        Container.buildInRoom(room);
         for(let i in todo.extensions) {
-            if(!todo.extensions[i]) {
-                continue;
+            let pos = new RoomPosition(todo.extensions[0].x, todo.extensions[0].y, todo.extensions[0].roomName);
+            if(pos.createConstructionSite(STRUCTURE_EXTENSION) == OK) {
+                console.log(`Building extension in ${room.name}`);
+                todo.extensions.shift();
             }
-            let pos = new RoomPosition(todo.extensions[i].x, todo.extensions[i].y, todo.extensions[i].roomName);
-            pos.createConstructionSite(STRUCTURE_EXTENSION);
-            todo.extensions.splice(i);
-            i--;
+
         }
         for(let i in todo.towers) {
-            if(!todo.extensions[i]) {
-                continue;
+            let pos = new RoomPosition(todo.towers[0].x, todo.towers[0].y, todo.towers[0].roomName);
+            if(pos.createConstructionSite(STRUCTURE_TOWER) == OK) {
+                console.log(`Building tower in ${room.name}`);
+                todo.towers.shift();
             }
-            let pos = new RoomPosition(todo.towers[i].x, todo.towers[i].y, todo.towers[i].roomName);
-            pos.createConstructionSite(STRUCTURE_TOWER);
-            todo.towers.splice(i);
-            i--;
+        }
+        for(let i in todo.containers) {
+            let pos = new RoomPosition(todo.containers[0].x, todo.containers[0].y, todo.containers[0].roomName);
+            if(pos.createConstructionSite(STRUCTURE_CONTAINER) == OK) {
+                console.log(`Building container in ${room.name}`);
+                todo.containers.shift();
+            }
         }
         for(let i in todo.roads) {
-            if(!todo.extensions[i]) {
-                continue;
-            }
-            let pos = new RoomPosition(todo.roads[i].x, todo.roads[i].y, todo.roads[i].roomName);
+            let pos = new RoomPosition(todo.roads[0].x, todo.roads[0].y, todo.roads[0].roomName);
             pos.createConstructionSite(STRUCTURE_ROAD);
-            todo.roads.splice(i);
-            i--;
+            todo.roads.shift();
         }
     }
     checkForSpawn(spawner) {
         let phase = Phases.getPhaseDetails(spawner.room),
             roleCount = this.roleCount(spawner.room),
             memory = {origin: spawner.room.name, spawn: spawner.name};
+        if (phase.Miner.count > 0) {
+            phase.Miner.count = spawner.room.find(FIND_SOURCES).length;
+        }
+
         if (roleCount.Harvester < phase.Harvester.count) {
             memory.role = Harvester.roleName;
+            this.spawnDrone(spawner, memory, roleCount);
+        }
+        else if (roleCount.Miner < phase.Miner.count) {
+            memory.role = Miner.roleName;
             this.spawnDrone(spawner, memory, roleCount);
         }
         else if (roleCount.Upgrader < phase.Upgrader.count) {
@@ -63,7 +75,7 @@ class Spawner extends Struct {
     }
     spawnDrone(spawner, memory, roleCount, opts = {}) {
         let phase = Phases.getPhaseDetails(spawner.room),
-            dName = creepNames[Game.time % creepNames.length] + ' ' + memory.role.charAt(0),
+            dName = 'Drone ' + memory.role.charAt(0) + Game.time % 10000,
             body;
         if(roleCount.Harvester == 0) {
             body = this.createCreepBody(spawner, phase[memory.role].body, {panic: true});

@@ -1,4 +1,5 @@
 const Creep = require('./creeps');
+const Container = require('./struct-container');
 
 class Upgrader extends Creep {
     constructor() {
@@ -7,7 +8,12 @@ class Upgrader extends Creep {
     run(creep) {
         this.checkWorkerState(creep);
         if(!creep.memory.working) {
-            this.harvest(creep);
+            if(Container.roleCount(creep.room).Miner > 0) {
+                this.harvestFromContainers(creep);
+            }
+            else {
+                this.harvest(creep);
+            }
         }
         else {
             this.upgrade(creep);

@@ -17,6 +17,7 @@ class Struct {
             return obj;
         }, {
             Harvester: 0,
+            Miner: 0,
             Upgrader: 0,
             Builder: 0
         } );
@@ -55,6 +56,21 @@ class Struct {
         }, 0);
         let constructing = room.find(FIND_CONSTRUCTION_SITES).reduce((total, s) => {
             if(s.structureType == STRUCTURE_TOWER) {
+                return total + 1;
+            }
+            return total;
+        }, 0);
+        return built + constructing;
+    }
+    getContainerCount(room) {
+        let built = room.find(FIND_MY_STRUCTURES).reduce((total, s) => {
+            if(s.structureType == STRUCTURE_CONTAINER) {
+                return total + 1;
+            }
+            return total;
+        }, 0);
+        let constructing = room.find(FIND_CONSTRUCTION_SITES).reduce((total, s) => {
+            if(s.structureType == STRUCTURE_CONTAINER) {
                 return total + 1;
             }
             return total;

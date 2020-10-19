@@ -3,12 +3,15 @@
 // -------------
 const Phases = require('./phases');
 const Room = require('./rooms');
+
 const Spawner = require('./struct-spawner');
 const Tower = require('./struct-tower');
 const Extension = require('./struct-extension');
+
 const Harvester = require('./role.harvester');
 const Upgrader = require('./role.upgrader');
 const Builder = require('./role.builder');
+const Miner = require('./role.miner');
 
 // TODO:
 // * Container mining after phase 2
@@ -29,8 +32,11 @@ module.exports.loop = function() {
         if(!room.controller.my) {
             continue;
         }
+
         Room.initRoomMemory(room);
-        Phases.checkPhaseNo(room);
+        if(Game.time % 10 == 3) {
+            Phases.checkPhaseNo(room);
+        }
 
         let structures = room.find(FIND_MY_STRUCTURES).filter(s => {
             if(s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_TOWER) {
@@ -41,7 +47,7 @@ module.exports.loop = function() {
             let s = structures[name];
             if(s.structureType == STRUCTURE_SPAWN) {
                 Spawner.run(s);
-                if(Game.time % 100 == 3) {
+                if(Game.time % 1 == 0) {
                     Spawner.buildTODOList(room, s);
                 }
             }
@@ -55,6 +61,9 @@ module.exports.loop = function() {
         let creep = Game.creeps[name];
         if(Harvester.is(creep)) {
             Harvester.run(creep);
+        }
+        else if(Miner.is(creep)) {
+            Miner.run(creep);
         }
         else if(Upgrader.is(creep)) {
             Upgrader.run(creep);
