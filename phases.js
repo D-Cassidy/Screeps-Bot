@@ -86,17 +86,17 @@ let Phases = [
         Harvester: {
             bodyBase: [WORK, CARRY, MOVE, MOVE],
             body: [CARRY, CARRY, MOVE],
-            count: 3
+            count: 2
         },
         Upgrader: {
             bodyBase: [WORK, CARRY, MOVE, MOVE],
             body: [WORK, CARRY, MOVE],
-            count: 4
+            count: 3
         },
         Builder: {
             bodyBase: [WORK, CARRY, MOVE, MOVE],
             body: [WORK, CARRY, MOVE],
-            count: 4
+            count: 3
         },
         Miner: {
             bodyBase: [WORK, WORK, WORK, WORK ,WORK, MOVE],
@@ -128,17 +128,17 @@ let Phases = [
         Harvester: {
             bodyBase: [WORK, CARRY, MOVE, MOVE],
             body: [CARRY, CARRY, MOVE],
-            count: 3
+            count: 2
         },
         Upgrader: {
             bodyBase: [WORK, CARRY, MOVE, MOVE],
             body: [WORK, CARRY, MOVE],
-            count: 3
+            count: 2
         },
         Builder: {
             bodyBase: [WORK, CARRY, MOVE, MOVE],
             body: [WORK, CARRY, MOVE],
-            count: 3
+            count: 2
         },
         Miner: {
             bodyBase: [WORK, WORK, WORK, WORK ,WORK, MOVE],
