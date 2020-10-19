@@ -8,7 +8,7 @@ to it.
 
 Currently just a pacifistic energy loving creep maker.
 
-#Phases
+# Phases
 This bot works by going through defined goals and phases.
 
 ## Phase 1
