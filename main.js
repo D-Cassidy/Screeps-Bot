@@ -49,7 +49,7 @@ module.exports.loop = function() {
             let s = structures[name];
             if(s.structureType == STRUCTURE_SPAWN) {
                 Spawner.run(s);
-                if(Game.time % 100 == 3) {
+                if(Game.time % 10 == 3) {
                     Spawner.buildTODOList(room, s);
                 }
             }

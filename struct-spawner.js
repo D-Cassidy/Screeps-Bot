@@ -9,6 +9,7 @@ const Struct = require('./struct-base');
 const Extension = require('./struct-extension');
 const Tower = require('./struct-tower');
 const Container = require('./struct-container');
+const Road = require('./struct-road');
 
 class Spawner extends Struct {
     constructor(structureType) {
@@ -20,6 +21,7 @@ class Spawner extends Struct {
         Extension.buildInRoom(room, s);
         Tower.buildInRoom(room, s);
         Container.buildInRoom(room);
+        Road.buildInRoom(room, s);
         for(let i in todo.extensions) {
             let pos = new RoomPosition(todo.extensions[0].x, todo.extensions[0].y, todo.extensions[0].roomName);
             if(pos.createConstructionSite(STRUCTURE_EXTENSION) == OK) {
@@ -127,7 +129,7 @@ class Spawner extends Struct {
             this.displaySpawningText(spawner);
         }
         if(Game.time % 25 == 3) {
-        this.checkForSpawn(spawner);
+            this.checkForSpawn(spawner);
         }
     }
 }

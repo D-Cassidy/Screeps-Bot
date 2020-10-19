@@ -60,6 +60,7 @@ let Phases = [
         Level: 2,
         desiredExtensions: 10,
         desiredTowers: 1,
+        desireRoads: true,
 
         // Phase 2 Goal: build 10 extensions and 1 tower
         checkGoal: (room) => {
@@ -90,12 +91,12 @@ let Phases = [
         Upgrader: {
             bodyBase: [WORK, CARRY, MOVE, MOVE],
             body: [WORK, CARRY, MOVE],
-            count: 3
+            count: 4
         },
         Builder: {
             bodyBase: [WORK, CARRY, MOVE, MOVE],
             body: [WORK, CARRY, MOVE],
-            count: 3
+            count: 4
         },
         Miner: {
             bodyBase: [WORK, WORK, WORK, WORK ,WORK, MOVE],
@@ -117,6 +118,7 @@ let Phases = [
         Level: 3,
         desiredExtensions: 20,
         desiredTowers: 1,
+        desireRoads: true,
 
         // Phase 3 Goal: no goal yet
         checkGoal: (room) => {
@@ -126,7 +128,7 @@ let Phases = [
         Harvester: {
             bodyBase: [WORK, CARRY, MOVE, MOVE],
             body: [CARRY, CARRY, MOVE],
-            count: 2
+            count: 3
         },
         Upgrader: {
             bodyBase: [WORK, CARRY, MOVE, MOVE],
@@ -141,6 +143,7 @@ let Phases = [
         Miner: {
             bodyBase: [WORK, WORK, WORK, WORK ,WORK, MOVE],
             body: [MOVE],
+
             count: 1
         },
         'Remote-Miner': {
