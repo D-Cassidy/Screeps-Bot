@@ -13,6 +13,8 @@ const Upgrader = require('./role.upgrader');
 const Builder = require('./role.builder');
 const Miner = require('./role.miner');
 
+const rickRoll = require('./keepRollinAndRollin');
+
 // TODO:
 // * Container mining after phase 2
 // * Miner role
@@ -34,9 +36,9 @@ module.exports.loop = function() {
         }
 
         Room.initRoomMemory(room);
-        if(Game.time % 10 == 3) {
-            Phases.checkPhaseNo(room);
-        }
+        //if(Game.time % 10 == 3) {
+        Phases.checkPhaseNo(room);
+        //}
 
         let structures = room.find(FIND_MY_STRUCTURES).filter(s => {
             if(s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_TOWER) {
@@ -47,7 +49,7 @@ module.exports.loop = function() {
             let s = structures[name];
             if(s.structureType == STRUCTURE_SPAWN) {
                 Spawner.run(s);
-                if(Game.time % 1 == 0) {
+                if(Game.time % 100 == 3) {
                     Spawner.buildTODOList(room, s);
                 }
             }
@@ -57,8 +59,16 @@ module.exports.loop = function() {
         }
     }
 
+    let i = 0;
     for(let name in Game.creeps) {
         let creep = Game.creeps[name];
+
+        // Rick roll em baby
+        if(i == Game.time % rickRoll.length % Object.keys(Game.creeps).length) {
+            creep.say(rickRoll[Game.time % rickRoll.length]);
+        }
+        i++;
+
         if(Harvester.is(creep)) {
             Harvester.run(creep);
         }

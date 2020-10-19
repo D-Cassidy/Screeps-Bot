@@ -22,14 +22,6 @@ class Struct {
             Builder: 0
         } );
         // Print role counts
-        let phase = Phases.getPhaseDetails(room);
-        console.log(
-            `|`,
-            `Harvesters: ${roleCount.Harvester || 0} |`,
-            `Upgraders: ${roleCount.Upgrader || 0} |`,
-            `Builders: ${roleCount.Builder || 0} |`,
-            `in ${room.name} (Phase ${phase.Level || 0})`
-        );
         return roleCount;
     }
     getExtensionCount(room) {

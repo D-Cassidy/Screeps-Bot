@@ -9,7 +9,7 @@ let Phases = [
             let phase = Phases.getPhaseDetails(room),
                 desiredExtensionCount = phase.desiredExtensions,
                 desiredContainerCount = room.find(FIND_SOURCES).length,
-                structures = room.find(FIND_MY_STRUCTURES);
+                structures = room.find(FIND_STRUCTURES);
             for(name in structures) {
                 let s = structures[name];
                 if(s.structureType == STRUCTURE_EXTENSION) {
@@ -26,26 +26,32 @@ let Phases = [
         },
 
         Harvester: {
-            body: [WORK, CARRY, MOVE, MOVE],
+            bodyBase: [WORK, CARRY, MOVE, MOVE],
+            body: [WORK, CARRY, MOVE],
             count: 2
         },
         Upgrader: {
-            body: [WORK, CARRY, MOVE, MOVE],
+            bodyBase: [WORK, CARRY, MOVE, MOVE],
+            body: [WORK, CARRY, MOVE],
             count: 4
         },
         Builder: {
-            body: [WORK, CARRY, MOVE, MOVE],
+            bodyBase: [WORK, CARRY, MOVE, MOVE],
+            body: [WORK, CARRY, MOVE],
             count: 4
         },
         Miner: {
+            bodyBase: [],
             body: [],
             count: 0
         },
         'Remote-Miner': {
+            bodyBase: [],
             body: [],
             count: 0
         },
         Settler: {
+            bodyBase: [],
             body:[],
             count:0
         }
@@ -77,26 +83,32 @@ let Phases = [
         },
 
         Harvester: {
-            body: [WORK, CARRY, MOVE, MOVE],
-            count: 2
+            bodyBase: [WORK, CARRY, MOVE, MOVE],
+            body: [CARRY, CARRY, MOVE],
+            count: 3
         },
         Upgrader: {
-            body: [WORK, CARRY, MOVE, MOVE],
+            bodyBase: [WORK, CARRY, MOVE, MOVE],
+            body: [WORK, CARRY, MOVE],
             count: 3
         },
         Builder: {
-            body: [WORK, CARRY, MOVE, MOVE],
+            bodyBase: [WORK, CARRY, MOVE, MOVE],
+            body: [WORK, CARRY, MOVE],
             count: 3
         },
         Miner: {
-            body: [WORK, WORK, WORK, WORK ,WORK, MOVE],
+            bodyBase: [WORK, WORK, WORK, WORK ,WORK, MOVE],
+            body: [MOVE],
             count: 1
         },
         'Remote-Miner': {
+            bodyBase: [],
             body: [],
             count: 0
         },
         Settler: {
+            bodyBase: [],
             body:[],
             count:0
         }
@@ -112,26 +124,32 @@ let Phases = [
         },
 
         Harvester: {
-            body: [WORK, CARRY, MOVE],
+            bodyBase: [WORK, CARRY, MOVE, MOVE],
+            body: [CARRY, CARRY, MOVE],
             count: 2
         },
         Upgrader: {
+            bodyBase: [WORK, CARRY, MOVE, MOVE],
             body: [WORK, CARRY, MOVE],
             count: 3
         },
         Builder: {
+            bodyBase: [WORK, CARRY, MOVE, MOVE],
             body: [WORK, CARRY, MOVE],
             count: 3
         },
         Miner: {
-            body: [WORK, WORK, WORK, WORK ,WORK, MOVE],
+            bodyBase: [WORK, WORK, WORK, WORK ,WORK, MOVE],
+            body: [MOVE],
             count: 1
         },
         'Remote-Miner': {
+            bodyBase: [],
             body: [],
             count: 0
         },
         Settler: {
+            bodyBase: [],
             body:[],
             count:0
         }

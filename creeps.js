@@ -38,11 +38,15 @@ class Creep {
             });
     }
     getContainers(creep) {
-        return Game.rooms[creep.memory.origin].find(FIND_MY_STRUCTURES)
+        return Game.rooms[creep.memory.origin].find(FIND_STRUCTURES)
             .filter(s => {
                 if(s.structureType == STRUCTURE_CONTAINER) {
                     return s;
                 }
+            })
+            .sort((a, b) => {
+                return (Math.abs(b.pos.x - creep.pos.x) + Math.abs(b.pos.y - creep.pos.y)) -
+                        (Math.abs(a.pos.x - creep.pos.x) + Math.abs(a.pos.y - creep.pos.y));
             });
     }
     getConstructionSites(creep) {
@@ -56,24 +60,27 @@ class Creep {
         if(creep.store[RESOURCE_ENERGY] == 0 && creep.memory.working == true) {
             creep.memory.working = false;
             creep.memory.sourceId = this.getFreeSource(creep);
-            creep.say('BEEP');
         }
         else if(creep.store[RESOURCE_ENERGY] == creep.store.getCapacity() && creep.memory.working == false) {
             creep.memory.working = true;
             delete creep.memory.sourceId;
-            creep.say('BOOP');
         }
     }
     harvestFromContainers(creep) {
-        let containers = this.getContainers(creep);
+        let containers = this.getContainers(creep),
+            insufficientCount = 0;
         for(let i in containers) {
             let container = containers[i];
             if(container.store[RESOURCE_ENERGY] < creep.store.getFreeCapacity(RESOURCE_ENERGY)) {
+                insufficientCount++;
                 continue;
             }
             else if(creep.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(container);
             }
+        }
+        if(containers.length == insufficientCount) {
+            this.harvest(creep);
         }
     }
     harvest(creep) {

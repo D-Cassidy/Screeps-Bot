@@ -56,6 +56,15 @@ class Spawner extends Struct {
             phase.Miner.count = spawner.room.find(FIND_SOURCES).length;
         }
 
+        console.log(
+            `|`,
+            `Harvesters: ${roleCount.Harvester || 0} |`,
+            `Miners: ${roleCount.Miner || 0} |`,
+            `Upgraders: ${roleCount.Upgrader || 0} |`,
+            `Builders: ${roleCount.Builder || 0} |`,
+            `in ${spawner.room.name} (Phase ${phase.Level || 0})`
+        );
+
         if (roleCount.Harvester < phase.Harvester.count) {
             memory.role = Harvester.roleName;
             this.spawnDrone(spawner, memory, roleCount);
@@ -78,20 +87,21 @@ class Spawner extends Struct {
             dName = 'Drone ' + memory.role.charAt(0) + Game.time % 10000,
             body;
         if(roleCount.Harvester == 0) {
-            body = this.createCreepBody(spawner, phase[memory.role].body, {panic: true});
+            body = this.createCreepBody(spawner, phase[memory.role].bodyBase, phase[memory.role].body, {panic: true});
         }
         else {
-            body = this.createCreepBody(spawner, phase[memory.role].body)
+            body = this.createCreepBody(spawner, phase[memory.role].bodyBase, phase[memory.role].body)
         }
         if (spawner.spawnCreep(body, dName, {dryRun: true}) == OK) {
             console.log(`Creating Drone in ${spawner.room.name}. Welcome ${dName}, please enjoy your short existence...`);
             spawner.spawnCreep(body, dName, {memory: memory});
         }
     }
-    createCreepBody(spawner, creepBodyBase, opts = {}) {
+    createCreepBody(spawner, baseBody, creepBody, opts = {}) {
         let availableEnergy,
-            creepBodyBaseCost = this.getCreepBodyCost(creepBodyBase),
-            creepBody = [],
+            baseCost = this.getCreepBodyCost(baseBody),
+            bodyCost = this.getCreepBodyCost(creepBody),
+            newBody = [],
             n;
         if(opts.panic) {
             availableEnergy = parseInt(spawner.room.energyAvailable);
@@ -99,12 +109,13 @@ class Spawner extends Struct {
         else {
             availableEnergy = parseInt(spawner.room.energyCapacityAvailable)
         }
-        n = parseInt(availableEnergy / creepBodyBaseCost);
+        n = parseInt((availableEnergy - baseCost) / bodyCost);
+        newBody = newBody.concat(baseBody);
         while(n != 0) {
-            creepBody = creepBody.concat(creepBodyBase);
+            newBody = newBody.concat(creepBody);
             n--;
         }
-        return creepBody;
+        return newBody;
     }
     getCreepBodyCost(body) {
         return body.reduce((total, part) => {
@@ -116,7 +127,7 @@ class Spawner extends Struct {
             this.displaySpawningText(spawner);
         }
         if(Game.time % 25 == 3) {
-            this.checkForSpawn(spawner);
+        this.checkForSpawn(spawner);
         }
     }
 }
