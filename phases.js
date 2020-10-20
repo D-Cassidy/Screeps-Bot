@@ -33,19 +33,20 @@ let Phases = [
         Upgrader: {
             bodyBase: [WORK, CARRY, MOVE, MOVE],
             body: [WORK, CARRY, MOVE],
-            count: 4
+            count: 2
         },
         Builder: {
             bodyBase: [WORK, CARRY, MOVE, MOVE],
             body: [WORK, CARRY, MOVE],
-            count: 4
+            count: 3
         },
         Miner: {
             bodyBase: [],
             body: [],
-            count: 0
+            count: 0,
+            maxParts: 10
         },
-        'Remote-Miner': {
+        RemoteBuilder: {
             bodyBase: [],
             body: [],
             count: 0
@@ -54,6 +55,11 @@ let Phases = [
             bodyBase: [],
             body:[],
             count:0
+        },
+        TauntBot: {
+            bodyBase: [],
+            body: [],
+            count: 0
         }
     },
     { // Controller Level 2
@@ -101,9 +107,10 @@ let Phases = [
         Miner: {
             bodyBase: [WORK, WORK, WORK, WORK ,WORK, MOVE],
             body: [MOVE],
-            count: 1
+            count: 1,
+            maxParts: 10
         },
-        'Remote-Miner': {
+        RemoteBuilder: {
             bodyBase: [],
             body: [],
             count: 0
@@ -112,6 +119,11 @@ let Phases = [
             bodyBase: [],
             body:[],
             count:0
+        },
+        TauntBot: {
+            bodyBase: [],
+            body: [],
+            count: 0
         }
     },
     { // Controller Level 3
@@ -133,28 +145,34 @@ let Phases = [
         Upgrader: {
             bodyBase: [WORK, CARRY, MOVE, MOVE],
             body: [WORK, CARRY, MOVE],
-            count: 2
+            count: 3
         },
         Builder: {
             bodyBase: [WORK, CARRY, MOVE, MOVE],
             body: [WORK, CARRY, MOVE],
-            count: 2
+            count: 3
         },
         Miner: {
             bodyBase: [WORK, WORK, WORK, WORK ,WORK, MOVE],
             body: [MOVE],
-
-            count: 1
+            count: 1,
+            maxParts: 10
         },
-        'Remote-Miner': {
-            bodyBase: [],
-            body: [],
-            count: 0
+        RemoteBuilder: {
+            bodyBase: [WORK, CARRY, MOVE, MOVE],
+            body: [WORK, CARRY, MOVE, MOVE],
+            count: 2
         },
         Settler: {
             bodyBase: [],
             body:[],
             count:0
+        },
+        TauntBot: {
+            bodyBase: [MOVE],
+            body: [MOVE],
+            count: 0,
+            maxParts: 10
         }
     }
 ];

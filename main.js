@@ -12,19 +12,22 @@ const Harvester = require('./role.harvester');
 const Upgrader = require('./role.upgrader');
 const Builder = require('./role.builder');
 const Miner = require('./role.miner');
+const Settler = require('./role.settler');
+const RemoteBuilder = require('./role.remote-builder');
+const TauntBot = require('./role.taunt-bot');
 
 const rickRoll = require('./keepRollinAndRollin');
 
 // TODO:
-// * Container mining after phase 2
-// * Miner role
-// * Containers as a phase 2 goals
+// Room scouting and scoring
+// Room defenses (walls, ramparts)
+// Storage?
 
 module.exports.loop = function() {
     for(let name in Memory.creeps) {
         let creep = Game.creeps[name];
         if(!creep) {
-            console.log(`Holy shit ${name} is fucking dead oh my god...`);
+            console.log(`Holy shit ${name} from ${Memory.creeps[name].origin} is fucking dead oh my god...`);
             delete Memory.creeps[name];
         }
     }
@@ -59,15 +62,17 @@ module.exports.loop = function() {
         }
     }
 
-    let i = 0;
+    // let i = 0;
     for(let name in Game.creeps) {
         let creep = Game.creeps[name];
 
+        /*
         // Rick roll em baby
         if(i == Game.time % rickRoll.length % Object.keys(Game.creeps).length) {
             creep.say(rickRoll[Game.time % rickRoll.length]);
         }
         i++;
+        */
 
         if(Harvester.is(creep)) {
             Harvester.run(creep);
@@ -80,6 +85,15 @@ module.exports.loop = function() {
         }
         else if(Builder.is(creep)) {
             Builder.run(creep);
+        }
+        else if(Settler.is(creep)) {
+            Settler.run(creep);
+        }
+        else if(RemoteBuilder.is(creep)) {
+            RemoteBuilder.run(creep);
+        }
+        else if(TauntBot.is(creep)) {
+            TauntBot.run(creep);
         }
     }
 };

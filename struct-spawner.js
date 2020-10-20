@@ -1,15 +1,17 @@
 const Phases = require('./phases');
 
-const Harvester = require('./role.harvester');
-const Upgrader = require('./role.upgrader');
-const Builder = require('./role.builder');
-const Miner = require('./role.miner');
-
 const Struct = require('./struct-base');
 const Extension = require('./struct-extension');
 const Tower = require('./struct-tower');
 const Container = require('./struct-container');
 const Road = require('./struct-road');
+
+const Harvester = require('./role.harvester');
+const Upgrader = require('./role.upgrader');
+const Builder = require('./role.builder');
+const Miner = require('./role.miner');
+const RemoteBuilder = require('./role.remote-builder');
+const TauntBot = require('./role.taunt-bot');
 
 class Spawner extends Struct {
     constructor(structureType) {
@@ -58,6 +60,7 @@ class Spawner extends Struct {
             phase.Miner.count = spawner.room.find(FIND_SOURCES).length;
         }
 
+        /*
         console.log(
             `|`,
             `Harvesters: ${roleCount.Harvester || 0} |`,
@@ -66,41 +69,60 @@ class Spawner extends Struct {
             `Builders: ${roleCount.Builder || 0} |`,
             `in ${spawner.room.name} (Phase ${phase.Level || 0})`
         );
-
-        if (roleCount.Harvester < phase.Harvester.count) {
+        */
+        if(roleCount.Harvester < phase.Harvester.count) {
             memory.role = Harvester.roleName;
             this.spawnDrone(spawner, memory, roleCount);
         }
-        else if (roleCount.Miner < phase.Miner.count) {
+        else if(roleCount.Miner < phase.Miner.count) {
             memory.role = Miner.roleName;
             this.spawnDrone(spawner, memory, roleCount);
         }
-        else if (roleCount.Upgrader < phase.Upgrader.count) {
+        else if(roleCount.Upgrader < phase.Upgrader.count) {
             memory.role = Upgrader.roleName;
             this.spawnDrone(spawner, memory, roleCount);
         }
-        else if (roleCount.Builder < phase.Builder.count) {
+        else if(roleCount.Builder < phase.Builder.count) {
             memory.role = Builder.roleName;
+            this.spawnDrone(spawner, memory, roleCount);
+        }
+        else if(roleCount.RemoteBuilder < phase.RemoteBuilder.count) {
+            for(let name in Memory.rooms) {
+                let roomMem = Memory.rooms[name];
+                if(roomMem.isSettlement) {
+                    memory.role = RemoteBuilder.roleName;
+                    memory.shardWide = true;
+                    this.spawnDrone(spawner, memory, roleCount);
+                }
+            }
+        }
+        else if(roleCount.TauntBot < phase.TauntBot.count) {
+            memory.role = TauntBot.roleName;
+            memory.shardWide = true;
             this.spawnDrone(spawner, memory, roleCount);
         }
     }
     spawnDrone(spawner, memory, roleCount, opts = {}) {
         let phase = Phases.getPhaseDetails(spawner.room),
-            dName = 'Drone ' + memory.role.charAt(0) + Game.time % 10000,
+            dName = 'Rick Astley ' + memory.role.charAt(0) + Game.time % 10000,
             body;
         if(roleCount.Harvester == 0) {
-            body = this.createCreepBody(spawner, phase[memory.role].bodyBase, phase[memory.role].body, {panic: true});
+            body = this.createCreepBody(spawner, memory.role, {panic: true});
         }
         else {
-            body = this.createCreepBody(spawner, phase[memory.role].bodyBase, phase[memory.role].body)
+            body = this.createCreepBody(spawner, memory.role);
         }
         if (spawner.spawnCreep(body, dName, {dryRun: true}) == OK) {
             console.log(`Creating Drone in ${spawner.room.name}. Welcome ${dName}, please enjoy your short existence...`);
             spawner.spawnCreep(body, dName, {memory: memory});
         }
     }
-    createCreepBody(spawner, baseBody, creepBody, opts = {}) {
-        let availableEnergy,
+    createCreepBody(spawner, role, opts = {}) {
+        let phase = Phases.getPhaseDetails(spawner.room),
+            availableEnergy,
+            maxParts = phase[role].maxParts || 100,
+            baseBody = phase[role].bodyBase,
+            creepBody = phase[role].body,
             baseCost = this.getCreepBodyCost(baseBody),
             bodyCost = this.getCreepBodyCost(creepBody),
             newBody = [],
@@ -114,6 +136,9 @@ class Spawner extends Struct {
         n = parseInt((availableEnergy - baseCost) / bodyCost);
         newBody = newBody.concat(baseBody);
         while(n != 0) {
+            if(newBody.length + creepBody.length > maxParts) {
+                break;
+            }
             newBody = newBody.concat(creepBody);
             n--;
         }

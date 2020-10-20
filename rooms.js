@@ -7,6 +7,12 @@ class Room {
             console.log(`Initializing Phase No. in ${room.name}`);
             roomMem.phase = Phases.getCurrentPhaseNo(room);
         }
+        if(room.memory.phase == 1) {
+            roomMem.isSettlement = true;
+        }
+        else {
+            roomMem.isSettlement = false;
+        }
         let phase = Phases.getPhaseDetails(room);
         if(!roomMem.buildingTODO) {
             console.log(`Initializing Building TODO in ${room.name}`);

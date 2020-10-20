@@ -21,7 +21,7 @@ class Container extends Struct {
                     spaces = Room.getFreeSpacesAround(source, 3, {excludeCreeps: true});
                 for(let j in spaces) {
                     let space = spaces[j];
-                    if(space.lookFor(LOOK_STRUCTURES) == STRUCTURE_CONTAINER && space.lookFor(LOOK_CONSTRUCTION_SITES).length > 0) {
+                    if(space.lookFor(LOOK_STRUCTURES).length > 0 || space.lookFor(LOOK_CONSTRUCTION_SITES).length > 0) {
                         hasContainer = true;
                         desiredContainers--;
                     }

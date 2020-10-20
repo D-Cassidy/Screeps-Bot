@@ -19,7 +19,9 @@ class Struct {
             Harvester: 0,
             Miner: 0,
             Upgrader: 0,
-            Builder: 0
+            Builder: 0,
+            RemoteBuilder: 0,
+            TauntBot: 0
         } );
         // Print role counts
         return roleCount;
@@ -55,7 +57,7 @@ class Struct {
         return built + constructing;
     }
     getContainerCount(room) {
-        let built = room.find(FIND_MY_STRUCTURES).reduce((total, s) => {
+        let built = room.find(FIND_STRUCTURES).reduce((total, s) => {
             if(s.structureType == STRUCTURE_CONTAINER) {
                 return total + 1;
             }
