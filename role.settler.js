@@ -1,12 +1,13 @@
 const Creep = require('./creeps');
 
+const targetRoom = '';
 class Settler extends Creep {
     constructor() {
         super('Settler');
     }
     run(creep) {
         if(!creep.memory.roomToClaim) {
-            creep.memory.roomToClaim = 'E46S41';
+            creep.memory.roomToClaim = targetRoom;
         }
         if(creep.room.name != creep.memory.roomToClaim) {
             let exitDir = creep.room.findExitTo(creep.memory.roomToClaim);

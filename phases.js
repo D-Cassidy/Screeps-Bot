@@ -3,6 +3,7 @@ let Phases = [
     { // Controller Level 1
         Level: 1,
         desiredExtensions: 5,
+        spawnCheck: 50,
 
         // Phase 1 Goal: build 5 extensions
         checkGoal: (room) => {
@@ -67,6 +68,7 @@ let Phases = [
         desiredExtensions: 10,
         desiredTowers: 1,
         desireRoads: true,
+        spawnCheck: 100,
 
         // Phase 2 Goal: build 10 extensions and 1 tower
         checkGoal: (room) => {
@@ -90,17 +92,17 @@ let Phases = [
         },
 
         Harvester: {
-            bodyBase: [WORK, CARRY, MOVE, MOVE],
+            bodyBase: [WORK, CARRY, CARRY, MOVE, MOVE],
             body: [CARRY, CARRY, MOVE],
             count: 2
         },
         Upgrader: {
-            bodyBase: [WORK, CARRY, MOVE, MOVE],
+            bodyBase: [WORK, CARRY, CARRY, MOVE, MOVE],
             body: [WORK, CARRY, MOVE],
             count: 3
         },
         Builder: {
-            bodyBase: [WORK, CARRY, MOVE, MOVE],
+            bodyBase: [WORK, CARRY, CARRY, MOVE, MOVE],
             body: [WORK, CARRY, MOVE],
             count: 3
         },
@@ -131,26 +133,43 @@ let Phases = [
         desiredExtensions: 20,
         desiredTowers: 1,
         desireRoads: true,
+        spawnCheck: 150,
 
         // Phase 3 Goal: no goal yet
         checkGoal: (room) => {
+            let phase = Phases.getPhaseDetails(room);
+            let desiredExtensionCount = phase.desiredExtensions,
+                desiredTowerCount = phase.desiredTowers;
+                structures = room.find(FIND_MY_STRUCTURES);
+            for(name in structures) {
+                let s = structures[name];
+                if(s.structureType == STRUCTURE_EXTENSION) {
+                    desiredExtensionCount--;
+                }
+                if(s.structureType == STRUCTURE_TOWER) {
+                    desiredTowerCount--;
+                }
+            }
+            if(desiredExtensionCount <= 0 && desiredTowerCount <= 0) {
+                return true;
+            }
             return false;
         },
 
         Harvester: {
-            bodyBase: [WORK, CARRY, MOVE, MOVE],
+            bodyBase: [WORK, CARRY, CARRY, MOVE, MOVE],
             body: [CARRY, CARRY, MOVE],
             count: 2
         },
         Upgrader: {
-            bodyBase: [WORK, CARRY, MOVE, MOVE],
+            bodyBase: [WORK, CARRY, CARRY, MOVE, MOVE],
             body: [WORK, CARRY, MOVE],
-            count: 3
+            count: 2
         },
         Builder: {
-            bodyBase: [WORK, CARRY, MOVE, MOVE],
+            bodyBase: [WORK, CARRY, CARRY, MOVE, MOVE],
             body: [WORK, CARRY, MOVE],
-            count: 3
+            count: 2
         },
         Miner: {
             bodyBase: [WORK, WORK, WORK, WORK ,WORK, MOVE],
@@ -159,9 +178,59 @@ let Phases = [
             maxParts: 10
         },
         RemoteBuilder: {
-            bodyBase: [WORK, CARRY, MOVE, MOVE],
+            bodyBase: [WORK, CARRY, CARRY, MOVE, MOVE],
             body: [WORK, CARRY, MOVE, MOVE],
+            count: 1
+        },
+        Settler: {
+            bodyBase: [],
+            body:[],
+            count:0
+        },
+        TauntBot: {
+            bodyBase: [MOVE],
+            body: [MOVE],
+            count: 0,
+            maxParts: 10
+        }
+    },
+    { // Controller Level 4
+        Level: 4,
+        desiredExtensions: 30,
+        desiredTowers: 2,
+        desireRoads: true,
+        spawnCheck: 200,
+
+        // Phase 4 Goal: no goal yet
+        checkGoal: (room) => {
+            return false;
+        },
+
+        Harvester: {
+            bodyBase: [WORK, CARRY, CARRY, MOVE, MOVE],
+            body: [CARRY, CARRY, MOVE],
             count: 2
+        },
+        Upgrader: {
+            bodyBase: [WORK, CARRY, CARRY, MOVE, MOVE],
+            body: [WORK, CARRY, MOVE],
+            count: 2
+        },
+        Builder: {
+            bodyBase: [WORK, CARRY, CARRY, MOVE, MOVE],
+            body: [WORK, CARRY, MOVE],
+            count: 2
+        },
+        Miner: {
+            bodyBase: [WORK, WORK, WORK, WORK ,WORK, MOVE],
+            body: [MOVE],
+            count: 1,
+            maxParts: 10
+        },
+        RemoteBuilder: {
+            bodyBase: [WORK, CARRY, CARRY, MOVE, MOVE],
+            body: [WORK, CARRY, MOVE, MOVE],
+            count: 1
         },
         Settler: {
             bodyBase: [],

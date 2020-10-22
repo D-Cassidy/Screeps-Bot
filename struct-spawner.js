@@ -120,7 +120,7 @@ class Spawner extends Struct {
     createCreepBody(spawner, role, opts = {}) {
         let phase = Phases.getPhaseDetails(spawner.room),
             availableEnergy,
-            maxParts = phase[role].maxParts || 100,
+            maxParts = phase[role].maxParts || 50,
             baseBody = phase[role].bodyBase,
             creepBody = phase[role].body,
             baseCost = this.getCreepBodyCost(baseBody),
@@ -131,7 +131,7 @@ class Spawner extends Struct {
             availableEnergy = parseInt(spawner.room.energyAvailable);
         }
         else {
-            availableEnergy = parseInt(spawner.room.energyCapacityAvailable)
+            availableEnergy = parseInt(spawner.room.energyCapacityAvailable);
         }
         n = parseInt((availableEnergy - baseCost) / bodyCost);
         newBody = newBody.concat(baseBody);
@@ -150,10 +150,11 @@ class Spawner extends Struct {
         }, 0);
     }
     run(spawner) {
+        let phase = Phases.getPhaseDetails(spawner.room);
         if(spawner.spawning) {
             this.displaySpawningText(spawner);
         }
-        if(Game.time % 25 == 3) {
+        if(Game.time % phase.spawnCheck == 3) {
             this.checkForSpawn(spawner);
         }
     }

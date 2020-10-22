@@ -17,8 +17,12 @@ class Builder extends Creep {
             }
         }
         else {
-            let constructionSites = this.getConstructionSites(creep);
-            if(constructionSites.length > 0) {
+            let repairSites = this.getRepairSites(creep),
+                constructionSites = this.getConstructionSites(creep);
+            if(Game.rooms[creep.memory.origin].memory.phase <= 2 && repairSites.length > 0) {
+                this.repair(creep, repairSites);
+            }
+            else if(constructionSites.length > 0) {
                 this.build(creep, constructionSites);
             }
             else {

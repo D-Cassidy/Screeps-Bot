@@ -37,6 +37,14 @@ module.exports.loop = function() {
         if(!room.controller.my) {
             continue;
         }
+        /*
+        if(room.name == 'E46S41') {
+            let sites = room.find(FIND_CONSTRUCTION_SITES);
+            for(let name in sites) {
+                let site = sites[name];
+                site.remove();
+            }
+        }*/
 
         Room.initRoomMemory(room);
         //if(Game.time % 10 == 3) {

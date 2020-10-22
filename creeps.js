@@ -45,13 +45,18 @@ class Creep {
                 }
             })
             .sort((a, b) => {
-                return (Math.abs(b.pos.x - creep.pos.x) + Math.abs(b.pos.y - creep.pos.y)) -
-                        (Math.abs(a.pos.x - creep.pos.x) + Math.abs(a.pos.y - creep.pos.y));
+                return (Math.abs(a.pos.x - creep.pos.x) + Math.abs(a.pos.y - creep.pos.y)) -
+                        (Math.abs(b.pos.x - creep.pos.x) + Math.abs(b.pos.y - creep.pos.y));
             });
     }
     getConstructionSites(creep) {
         return Game.rooms[creep.memory.origin].find(FIND_MY_CONSTRUCTION_SITES)
             .sort((c1, c2) => { return c2.progress - c1.progress; });
+    }
+    getRepairSites(creep) {
+        return Game.rooms[creep.memory.origin].find(FIND_STRUCTURES).filter(structure => {
+            if(structure.hits < structure.hitsMax) {return structure;}
+        });
     }
     checkWorkerState(creep) {
         if(creep.memory.working === undefined) {
@@ -67,20 +72,19 @@ class Creep {
         }
     }
     harvestFromContainers(creep) {
-        let containers = this.getContainers(creep),
-            insufficientCount = 0;
+        let containers = this.getContainers(creep);
         for(let i in containers) {
             let container = containers[i];
             if(container.store[RESOURCE_ENERGY] < creep.store.getFreeCapacity(RESOURCE_ENERGY)) {
-                insufficientCount++;
                 continue;
             }
             else if(creep.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(container);
+                return;
             }
         }
-        if(containers.length == insufficientCount) {
-            this.harvest(creep);
+        if(creep.withdraw(containers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(containers[0]);
         }
     }
     harvest(creep) {
@@ -105,6 +109,11 @@ class Creep {
     build(creep, constructionSites) {
         if(creep.build(constructionSites[0]) == ERR_NOT_IN_RANGE) {
             creep.moveTo(constructionSites[0]);
+        }
+    }
+    repair(creep, repairSites) {
+        if(creep.repair(repairSites[0]) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(repairSites[0]);
         }
     }
 }

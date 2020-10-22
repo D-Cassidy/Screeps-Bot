@@ -21,7 +21,7 @@ class Miner extends Creep {
 
         if(creep.memory.container) {
             let source = Game.getObjectById(creep.memory.sourceId) || undefined;
-            if(creep.pos.x != container.pos.x && creep.pos.y != container.pos.y) {
+            if(creep.pos.x != container.pos.x || creep.pos.y != container.pos.y) {
                 creep.moveTo(container);
             }
             else if(creep.memory.sourceId) {

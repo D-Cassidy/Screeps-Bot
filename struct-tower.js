@@ -15,7 +15,9 @@ class Tower extends Struct {
         while(desiredTowers > 0) {
             let pos;
             pos = new RoomPosition(spawner.pos.x - 1, spawner.pos.y - 4, room.name);
-            if(!pos.lookFor(LOOK_STRUCTURES).length > 0 && !pos.lookFor(LOOK_CONSTRUCTION_SITES).length > 0) {
+            if((pos.lookFor(LOOK_STRUCTURES).length == 0 ||
+                !(pos.lookFor(LOOK_STRUCTURES)[0].structureType == STRUCTURE_TOWER))  &&
+                !pos.lookFor(LOOK_CONSTRUCTION_SITES).length > 0) {
                 room.memory.buildingTODO.towers.push(pos);
                 console.log("Pushing tower location into memory...");
                 desiredTowers--;
@@ -24,7 +26,9 @@ class Tower extends Struct {
                 break;
             }
             pos = new RoomPosition(spawner.pos.x + 1, spawner.pos.y - 4, room.name);
-            if(!pos.lookFor(LOOK_STRUCTURES).length > 0 && !pos.lookFor(LOOK_CONSTRUCTION_SITES).length > 0) {
+            if((pos.lookFor(LOOK_STRUCTURES).length == 0 ||
+                !(pos.lookFor(LOOK_STRUCTURES)[0].structureType == STRUCTURE_TOWER))  &&
+                !pos.lookFor(LOOK_CONSTRUCTION_SITES).length > 0) {
                 room.memory.buildingTODO.towers.push(pos);
                 console.log("Pushing tower location into memory...");
                 desiredTowers--;
@@ -33,7 +37,9 @@ class Tower extends Struct {
                 break;
             }
             pos = new RoomPosition(spawner.pos.x + 4, spawner.pos.y - 1, room.name);
-            if(!pos.lookFor(LOOK_STRUCTURES).length > 0 && !pos.lookFor(LOOK_CONSTRUCTION_SITES).length > 0) {
+            if((pos.lookFor(LOOK_STRUCTURES).length == 0 ||
+                !(pos.lookFor(LOOK_STRUCTURES)[0].structureType == STRUCTURE_TOWER))  &&
+                !pos.lookFor(LOOK_CONSTRUCTION_SITES).length > 0) {
                 room.memory.buildingTODO.towers.push(pos);
                 console.log("Pushing tower location into memory...");
                 desiredTowers--;
@@ -42,7 +48,9 @@ class Tower extends Struct {
                 break;
             }
             pos = new RoomPosition(spawner.pos.x + 4, spawner.pos.y + 1, room.name);
-            if(!pos.lookFor(LOOK_STRUCTURES).length > 0 && !pos.lookFor(LOOK_CONSTRUCTION_SITES).length > 0) {
+            if((pos.lookFor(LOOK_STRUCTURES).length == 0 ||
+                !(pos.lookFor(LOOK_STRUCTURES)[0].structureType == STRUCTURE_TOWER))  &&
+                !pos.lookFor(LOOK_CONSTRUCTION_SITES).length > 0) {
                 room.memory.buildingTODO.towers.push(pos);
                 console.log("Pushing tower location into memory...");
                 desiredTowers--;
@@ -50,12 +58,11 @@ class Tower extends Struct {
             if(desiredTowers == 0) {
                 break;
             }
+            break;
         }
     }
     attackHostileCreeps(tower) {
-        let creeps = tower.room.find(FIND_HOSTILE_CREEPS).filter(creep => {
-            if(!creep.owner.username == 'Skitterkids') {return creep;}
-        });
+        let creeps = tower.room.find(FIND_HOSTILE_CREEPS);
         tower.attack(creeps[0]);
     }
     healFriendlyCreeps(tower) {
